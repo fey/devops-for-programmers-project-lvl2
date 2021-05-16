@@ -1,5 +1,11 @@
+install:
+	ansible-galaxy install -r requirements.yml
+
 ping:
-	ansible -i inventory.yaml all -m ping
+	ansible -i inventory.yml all -m ping
 
 uptime:
-	ansible -i inventory.yaml all -a "uptime"
+	ansible -i inventory.yml all -a "uptime"
+
+deploy:
+	ansible-playbook playbook.yml -i inventory.yml

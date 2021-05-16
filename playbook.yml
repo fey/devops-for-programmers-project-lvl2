@@ -1,0 +1,29 @@
+---
+- name:
+  hosts: all
+  vars:
+    pip_package: python3-pip
+    pip_install_packages:
+      - name: docker
+
+  roles:
+    - geerlingguy.pip
+  tasks:
+    # - name: Install Docker Module for Python
+    #   pip:
+    #     name: docker
+    #     state: present
+
+    - name: Pull default Docker image
+      docker_image:
+        name: redmine:4.2.1
+        source: pull
+
+    - name: Create default containers
+      docker_container:
+        name: redmine
+        image: redmine:4.2.1
+        recreate: yes
+        ports:
+          - 3000:3000
+        state: started
