@@ -34,12 +34,41 @@
       3437326234303738640a306264396165623532623362323339613065323835383337636132323939
       32383736353766653461376237363866346335303862396231313137373062306266
     REDMINE_DB_PORT: 25060
+    datadog_api_key: !vault |
+      $ANSIBLE_VAULT;1.1;AES256
+      38666663646265383065306466386536326337653038663664643336336434323836613066663838
+      3330326161393434643463646664326563316134393130360a643464646638316330636164336331
+      38383363333137626539356230623337396230626239653436313566626564383139663830636662
+      3962316631393334640a653466623066393166633665303264333933633331336565346534383461
+      38353335306431313434343935396331316537623766373965396666356362353136376334353636
+      3539393234613330656136396239653564376561303064396562
+    datadog_site: "datadoghq.com"
+    datadog_checks:
+      process:
+        init_config:
+        instances:
+          - name: ssh
+            search_string: [ 'ssh', 'sshd' ]
+          - name: syslog
+            search_string: [ 'rsyslog' ]
+            cpu_check_interval: 0.2
+            exact_match: true
+            ignore_denied_access: true
+      http_check:
+        init_config:
+        instances:
+          - name: project_status
+            url: http://localhost:5000
+            timeout: 5
+            method: GET
+
     pip_package: python3-pip
     pip_install_packages:
       - name: docker
 
   roles:
     - geerlingguy.pip
+    - datadog.datadog
   tasks:
     - name: Install packages
       apt:
