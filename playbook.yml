@@ -58,7 +58,7 @@
         init_config:
         instances:
           - name: project_status
-            url: http://localhost:5000
+            url: http://localhost:3000
             timeout: 5
             method: GET
 
