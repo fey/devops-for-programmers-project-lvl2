@@ -44,16 +44,6 @@
       3539393234613330656136396239653564376561303064396562
     datadog_site: "datadoghq.com"
     datadog_checks:
-      process:
-        init_config:
-        instances:
-          - name: ssh
-            search_string: [ 'ssh', 'sshd' ]
-          - name: syslog
-            search_string: [ 'rsyslog' ]
-            cpu_check_interval: 0.2
-            exact_match: true
-            ignore_denied_access: true
       http_check:
         init_config:
         instances:
@@ -66,19 +56,14 @@
     pip_install_packages:
       - name: docker
 
-  roles:
-    - geerlingguy.pip
-    - datadog.datadog
   tasks:
-    - name: Install packages
+    - name: Update apt cache
       apt:
-        name: python3-pip
         update_cache: yes
 
-    - name: Install Docker Module for Python
-      pip:
-        name: docker
-        state: present
+    - name: Install pip with packages
+      include_role:
+        name: geerlingguy.pip
 
     - name: Create default containers
       docker_container:
@@ -95,3 +80,7 @@
           REDMINE_DB_USERNAME: "{{ REDMINE_DB_USERNAME }}"
           REDMINE_DB_PASSWORD: "{{ REDMINE_DB_PASSWORD }}"
           REDMINE_DB_PORT: "{{ REDMINE_DB_PORT | int }}"
+
+    - name: Setting up Datadog agent
+      include_role:
+        name: datadog.datadog
