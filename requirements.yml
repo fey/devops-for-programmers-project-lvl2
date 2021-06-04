@@ -1,3 +1,6 @@
 # from GitHub, overriding the name and specifying a specific tag
-- src: geerlingguy.pip
-- src: datadog.datadog
+roles:
+- name: geerlingguy.pip
+- name: datadog.datadog
+collections:
+- name: community.docker
