@@ -8,4 +8,4 @@ uptime:
 	ansible -i inventory.yml all -a "uptime"
 
 deploy:
-	ansible-playbook playbook.yml --vault-password-file vault-password -i inventory.yml
+	ansible-playbook playbook.yml -i inventory.ini --vault-password-file vault-password
